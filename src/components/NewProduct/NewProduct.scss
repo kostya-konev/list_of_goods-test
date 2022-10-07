@@ -1,0 +1,21 @@
+.App__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+}
+
+.controllers {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.input {
+  margin-bottom: 5px;
+}
+
+.error__message {
+  color: red;
+}

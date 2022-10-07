@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "imageUrl": "some url here",
+      "name": "Chees",
+      "count": 1,
+      "size": {
+        "width": 100,
+        "height": 150
+        },
+      "weight": "200g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 2,
+      "imageUrl": "some url here",
+      "name": "Bread",
+      "count": 2,
+      "size": {
+        "width": 100,
+        "height": 200
+        },
+      "weight": "300g",
+      "comments": ["CommentModel", "CommentModel"]
+    }
+  ],
+  "comments": [
+    {
+      "id": 3,
+      "productId": 1,
+      "description": "some text here",
+      "date": "14:00 22.08.2021"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
