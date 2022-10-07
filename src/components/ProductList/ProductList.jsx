@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import './ProductList.scss';
 
-export const ProductList = ({ products, setIsModalOpened, deleteProduct, setSelectedId }) => {
+export const ProductList = ({
+  products,
+  setIsModalOpened,
+  deleteProduct,
+  setSelectedId,
+  onReverse,
+  onSortByAmount 
+}) => {
   const [isDeleteChosen, setIsDeleteChosen] = useState(false);
   const [idToDelete, setIdToDelete] = useState(0);
 
@@ -10,7 +17,7 @@ export const ProductList = ({ products, setIsModalOpened, deleteProduct, setSele
       <ul className="products">
         {products.map(product => (
           <li
-            key={product.id}
+            key={Math.random()}
             className='product'
           >
             <span>
@@ -41,6 +48,22 @@ export const ProductList = ({ products, setIsModalOpened, deleteProduct, setSele
           </li>
         ))}
       </ul>
+
+      <div className="dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" 
+          aria-haspopup="true" 
+          aria-expanded="false"
+        >
+          Sort
+        </button>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <button onClick={() => onReverse()} className="dropdown-item">Reverse</button>
+          <button onClick={() => onSortByAmount()} className="dropdown-item">Sort by amount</button>
+        </div>
+      </div>
 
       <div className="App__button-add">
         <button

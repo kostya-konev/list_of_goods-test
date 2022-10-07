@@ -4,14 +4,15 @@ import { ProductList } from './components/ProductList/ProductList';
 import productsFromServer from './server/db.json';
 import { ProductCard } from './components/ProductCard/ProductCard';
 import { NewProduct } from './components/NewProduct/NewProduct'
+import { createContext } from 'react';
 
+export const MyContext = createContext('without provider');
 
 export const App = () => {
   const [products, setProducts] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
   const deleteProduct = (id) => {
     const updatedProducts = products.filter(product => product.id !== id);
 
@@ -19,7 +20,15 @@ export const App = () => {
   };
 
   const addProduct = (newProduct) => {
-    setProducts(prev => [...prev, newProduct]); 
+    setProducts(prev => [...prev, newProduct].sort((prod1, prod2) => prod1.name.localeCompare(prod2.name)));
+  };
+
+  const reverse = () => {
+    setProducts([...products].reverse());
+  };
+
+  const sortByAmount = () => {
+    setProducts([...products].sort((a, b) => b.count - a.count));
   };
 
   useEffect(() => {
@@ -27,7 +36,7 @@ export const App = () => {
     //   .then(res => res.json())
     //   .then(products => setProducts(products))
 
-    setProducts(productsFromServer.products);
+    setProducts(productsFromServer.products.sort((prod1, prod2) => prod1.name.localeCompare(prod2.name)));
   }, []);
 
   useEffect(() => {
@@ -38,14 +47,23 @@ export const App = () => {
 
   return (
     <div className="App">
-      <ProductList
-        products={products}
-        setIsModalOpened={setIsModalOpened}
-        deleteProduct={deleteProduct}
-        setSelectedId={setSelectedId}
-      />
-      {isModalOpened && <NewProduct addProduct={addProduct} products={products} setIsModalOpened={setIsModalOpened} />}
-      {selectedProduct && <ProductCard product={selectedProduct} />}
+      <MyContext.Provider value={products}>
+        <ProductList
+          products={products}
+          setIsModalOpened={setIsModalOpened}
+          deleteProduct={deleteProduct}
+          setSelectedId={setSelectedId}
+          onReverse={reverse}
+          onSortByAmount={sortByAmount}
+        />
+        {isModalOpened &&
+          <NewProduct
+            addProduct={addProduct}
+            products={products}
+            setIsModalOpened={setIsModalOpened}
+          />}
+        {selectedProduct && <ProductCard product={selectedProduct} />}
+      </MyContext.Provider>
     </div>
   );
 };

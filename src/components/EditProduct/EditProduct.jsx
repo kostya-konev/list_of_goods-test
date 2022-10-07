@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import './NewProduct.scss';
+import React, { useState, useContext } from "react";
+import './EditProduct.scss';
+import { MyContext } from "../../App";
 
-export const NewProduct = ({ addProduct, products, setIsModalOpened }) => {
-
+export const EditProduct = ({ setIsEditOpen, productId, selectedProduct }) => {
   const [url, setUrl] = useState('');
   const [name, setName] = useState('');
   const [count, setCount] = useState('');
@@ -10,6 +10,7 @@ export const NewProduct = ({ addProduct, products, setIsModalOpened }) => {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [comment, setComment] = useState('');
+  const context = useContext(MyContext);
 
   const reset = () => {
     setUrl('');
@@ -22,26 +23,30 @@ export const NewProduct = ({ addProduct, products, setIsModalOpened }) => {
   };
 
   return (
-    <div className="App__form">
-      You can add some good here
-      <span style={{'fontSize': '100px'}}>&#128521;</span>
-      <form
+    <div className="App__edit">
+       <form
         onSubmit={(event) => {
           event.preventDefault();
           const newProduct = {
-            id: products[products.length - 1].id + 1,
-            imageUrl: url,
-            name: name,
-            count: count,
+            id: context[context.length - 1].id + 1,
+            imageUrl: url || selectedProduct.imageUrl,
+            name: name || selectedProduct.name,
+            count: count || selectedProduct.count,
             size: {
-              width: width,
-              height: height,
+              width: width || selectedProduct.size.width,
+              height: height || selectedProduct.size.height,
             },
-            weight: weight,
-            comment: [comment],
+            weight: weight || selectedProduct.size.weight,
+            comment: [comment] | selectedProduct.comment,
           };
 
-          addProduct(newProduct);
+          fetch(`http://localhost:3000/products/${productId}`, {
+            method: 'PATCH',
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(newProduct),
+          });
           reset();
         }}
       >
@@ -97,9 +102,9 @@ export const NewProduct = ({ addProduct, products, setIsModalOpened }) => {
         />
         <div className="controllers">
           <button type='submit' className="btn btn-secondary">Confirm</button>
-          <button onClick={() => setIsModalOpened(false)} className="btn btn-secondary">Cancel</button>
+          <button onClick={() => setIsEditOpen(false)} className="btn btn-secondary">Cancel</button>
         </div>
       </form>
     </div>
-  )
+  );
 }
