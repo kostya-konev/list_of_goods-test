@@ -10,7 +10,7 @@ export const ProductCard = ({ product }) => {
   } else {
     return (
       <div className="App__card">
-        <span className="card-sign">Your good here &#128071;</span>
+        <span className="card-sign">Your good here 22 &#128071;</span>
         <div className="card" style={{ "width": "18rem" }}>
           <img className="card-img-top" src={product.imageUrl} alt="Card cap" />
           <div className="card-body">
